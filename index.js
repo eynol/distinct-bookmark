@@ -52,11 +52,15 @@ function domWalker(dom){
   showlog();
 
   setTimeout(function() {
-    if(confirm('Donwload ProNew Bookmarks File?')){
+    if(confirm('Donwload Distinct Bookmarks File?')){
       downloadFile(dom)
     }
     dom = null;
   }, 10);
+  if(console.table){
+    console.table([...removeMap])
+  }
+  removeMap.clear();
   bookmarks.value = '';
 }
 
