@@ -24,7 +24,7 @@ function recieveText(text){
 function domWalker(dom){
   var list = [dom];
   var urlset = new Set();
-
+  var eleToRemove = new Set();
 
   while(list.length){
     var currentTag = list.shift();
@@ -35,7 +35,7 @@ function domWalker(dom){
       if(urlset.has(url)){
         log('removeing:',url);
         analystic(url)
-        currentTag.remove()
+        eleToRemove.add(currentTag.parentElement)
       }else{
         urlset.add(url)
       }
@@ -47,6 +47,11 @@ function domWalker(dom){
       list.push(...currentTag.children)
     }
   }
+
+  for(let e in eleToRemove.values()){
+    e.remove();
+  }
+  eleToRemove.clear();
 
   setTimeout(function() {
     if(confirm('Donwload ProNew Bookmarks File?')){
