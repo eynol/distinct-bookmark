@@ -45,7 +45,7 @@ function domWalker(dom){
   }
   querySet = null;
 
-  for(let e in eleToRemove.values()){
+  for(let e of eleToRemove.values()){
     e.remove();
   }
   eleToRemove.clear();
