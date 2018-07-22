@@ -26,32 +26,30 @@ function domWalker(dom){
   var urlset = new Set();
   var eleToRemove = new Set();
 
-  while(list.length){
-    var currentTag = list.shift();
+  var querySet = dom.documentElement.querySelectorAll('dt');
+  for(let i =0;i<querySet.length;i++){
+    let currentTag = querySet[i];
 
     //process current tag
-    if(currentTag.href){
-      var url = currentTag.href;
+    let a_tag = currentTag.firstElementChild;
+    if(a_tag && a_tag.href){
+      var url = a_tag.href;
       if(urlset.has(url)){
         log('removeing:',url);
         analystic(url)
-        eleToRemove.add(currentTag.parentElement)
+        eleToRemove.add(currentTag)
       }else{
         urlset.add(url)
       }
     }
-
-
-    // add children to list
-    if(currentTag.children.length){
-      list.push(...currentTag.children)
-    }
   }
+  querySet = null;
 
   for(let e in eleToRemove.values()){
     e.remove();
   }
   eleToRemove.clear();
+  showlog();
 
   setTimeout(function() {
     if(confirm('Donwload ProNew Bookmarks File?')){
@@ -62,9 +60,14 @@ function domWalker(dom){
   bookmarks.value = '';
 }
 
-var htmlResult = document.getElementById('htmlResult')
+var htmlResult = document.getElementById('htmlResult');
+var results_arr = [];
+function showlog(){
+  htmlResult.innerText= results_arr.join('\n')
+  results_arr = [];
+}
 function log(...args){
-  htmlResult.innerText+=args.join(' ')+'\n'
+  results_arr.push(args.join(' '))
 }
 
 var removeMap = new Map();
